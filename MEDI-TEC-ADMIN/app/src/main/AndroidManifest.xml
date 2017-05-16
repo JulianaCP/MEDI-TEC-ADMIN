@@ -19,7 +19,10 @@
         <activity android:name=".sintomas_agregar" />
         <activity android:name=".enfermedades_lista" />
         <activity android:name=".editar_enfermedades" />
-        <activity android:name=".enfermedades_Agregar"></activity>
+        <activity android:name=".enfermedades_Agregar" />
+        <activity android:name=".medicamentos_lista" />
+        <activity android:name=".editar_medicamentos" />
+        <activity android:name=".medicamentos_agregar"></activity>
     </application>
 
 </manifest>

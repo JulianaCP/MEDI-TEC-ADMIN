@@ -69,10 +69,6 @@ public class enfermedades_lista extends AppCompatActivity {
 
             Intent intent = new Intent(getApplicationContext(),enfermedades_Agregar.class);
             startActivity(intent);
-            //LO COMENTADO ES LO BUENO
-
-            //        Intent intent = new Intent(getApplicationContext(),sintomas_agregar.class);
-            //      startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }

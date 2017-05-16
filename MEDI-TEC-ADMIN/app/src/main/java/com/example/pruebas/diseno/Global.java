@@ -8,5 +8,6 @@ import java.util.ArrayList;
 public class Global {
     static ArrayList<Sintoma>  listaSintomas = new ArrayList<Sintoma>();
     static ArrayList<Enfermedad>  listaEnfermedades = new ArrayList<Enfermedad>();
+    static ArrayList<Medicamento>  listaMedicamentos = new ArrayList<Medicamento>();
     static int posicionItemListViewPresionado;
 }

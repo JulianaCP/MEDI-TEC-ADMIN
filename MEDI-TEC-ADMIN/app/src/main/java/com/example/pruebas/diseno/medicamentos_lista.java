@@ -17,44 +17,40 @@ import android.widget.PopupMenu;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class medicamentos_lista extends AppCompatActivity {
 
     MenuInflater inflayer;
-    ArrayList<Sintoma> arrayListaSintomasClass;
-    ArrayList<String> arrayListaSintomasString;
-    ArrayAdapter<String>adapter;
-    ListView sintomasListViewSintomas;
+    ArrayList<Medicamento> arrayListaMedicamentosClass;
+    ArrayList<String> arrayListaMedicamentosString;
+    ArrayAdapter<String> adapter;
+    ListView medicamentos_lista_ListViewMedicamentos;
     int posicionItemPopuMenuPresionado;
     Bundle bundle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        sintomasListViewSintomas = (ListView)findViewById(R.id.sintomasLisViewListaSintomas);
+        setContentView(R.layout.activity_medicamentos_lista);
 
-        //borrar TEMPORAL - OBTENER DESPUES DE LA BASE
+        medicamentos_lista_ListViewMedicamentos = (ListView)findViewById(R.id.medicamentos_lista_listView_medicamentos);
+
         llenarGlobal();
 
-        llenarListViewSintomas();
+        llenarListViewMedicamentos();
 
-        sintomasListViewSintomas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        medicamentos_lista_ListViewMedicamentos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Global.posicionItemListViewPresionado = i;
                 showPopupMenu(view);
             }
         });
-
-
     }
-
     @Override
     protected void onResume() {
-
-        llenarListViewSintomas();
+        llenarListViewMedicamentos();
         super.onResume();
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_crud,menu);
@@ -64,47 +60,40 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.menuOpcionAgregar){
-
-
-            Intent intent = new Intent(getApplicationContext(),medicamentos_lista.class);
+            Intent intent = new Intent(getApplicationContext(),medicamentos_agregar.class);
             startActivity(intent);
-
-            //LO COMENTADO ES LO BUENO
-
-    //        Intent intent = new Intent(getApplicationContext(),sintomas_agregar.class);
-      //      startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }
-
     public void llenarGlobal(){
-        Sintoma sin1= new Sintoma(1,"Sintoma_1");
-        Sintoma sin2= new Sintoma(2,"Sintoma_2");
-        Sintoma sin3= new Sintoma(3,"Sintoma_3");
-        Sintoma sin4= new Sintoma(4,"Sintoma_4");
+        Medicamento me1= new Medicamento(1,"Medicamento_1","Esta es el Medicamento 1");
+        Medicamento me2= new Medicamento(2,"Medicamento_2","Esta es el Medicamento 2");
+        Medicamento me3= new Medicamento(3,"Medicamento_3","Esta es el Medicamento 3");
+        Medicamento me4= new Medicamento(4,"Medicamento_4","Esta es el Medicamento 4");
 
-        Global.listaSintomas.add(sin1);
-        Global.listaSintomas.add(sin2);
-        Global.listaSintomas.add(sin3);
-        Global.listaSintomas.add(sin4);
+        Global.listaMedicamentos.add(me1);
+        Global.listaMedicamentos.add(me2);
+        Global.listaMedicamentos.add(me3);
+        Global.listaMedicamentos.add(me4);
     }
-    public void llenarListViewSintomas(){
-        arrayListaSintomasClass = Global.listaSintomas;
-        arrayListaSintomasString = convertirClass_String();
-        adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,arrayListaSintomasString);
-        sintomasListViewSintomas.setAdapter(adapter);
+
+    public void llenarListViewMedicamentos(){
+        arrayListaMedicamentosClass = Global.listaMedicamentos;
+        arrayListaMedicamentosString = convertirClass_String();
+        adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,arrayListaMedicamentosString);
+        medicamentos_lista_ListViewMedicamentos.setAdapter(adapter);
     }
     public ArrayList<String> convertirClass_String(){
         ArrayList<String> listaTemp = new ArrayList<String>();
         String valor;
 
-        for (int i=0;i<arrayListaSintomasClass.size();i++){
-            valor = arrayListaSintomasClass.get(i).getNombre();
+        for (int i=0;i<arrayListaMedicamentosClass.size();i++){
+            valor = arrayListaMedicamentosClass.get(i).getNombre();
             listaTemp.add(valor);
         }
-
         return listaTemp;
     }
+
     public void showPopupMenu(final View view){
 
         PopupMenu popupMenu = new PopupMenu(this, view);
@@ -116,12 +105,12 @@ public class MainActivity extends AppCompatActivity {
 
                     bundle = new Bundle();
                     bundle.putString("valor",Integer.toString(Global.posicionItemListViewPresionado));
-                    Intent intent = new Intent(getApplicationContext(),editar_Sintomas.class);
+                    Intent intent = new Intent(getApplicationContext(),editar_medicamentos.class);
                     intent.putExtras(bundle);
                     startActivity(intent);
                 }
                 else{
-                    new AlertDialog.Builder(MainActivity.this)
+                    new AlertDialog.Builder(medicamentos_lista.this)
 
                             .setMessage("¿Desea Eliminar?")
                             .setTitle("Confirmacion")
@@ -139,7 +128,6 @@ public class MainActivity extends AppCompatActivity {
                                     dialog.cancel();
                                 }
                             }).create().show();
-
                 }
                 return true;
             }
@@ -149,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
         popupMenu.show();
     }
     public void eliminar(int posicion){
-        Global.listaSintomas.remove(posicion);
+        Global.listaMedicamentos.remove(posicion);
         onResume();
     }
 }
