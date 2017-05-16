@@ -6,9 +6,19 @@ package com.example.pruebas.diseno;
 public class Enfermedad {
     int idEnfermedad;
     String nombre;
-    public Enfermedad(int idVar,String nombreVar){
+    String descripcion;
+    public Enfermedad(int idVar,String nombreVar,String descripVar){
         this.idEnfermedad = idVar;
         this.nombre = nombreVar;
+        this.descripcion = descripVar;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
     public int getIdEnfermedad() {

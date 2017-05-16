@@ -17,44 +17,46 @@ import android.widget.PopupMenu;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class enfermedades_lista extends AppCompatActivity {
 
-    MenuInflater inflayer;
-    ArrayList<Sintoma> arrayListaSintomasClass;
-    ArrayList<String> arrayListaSintomasString;
-    ArrayAdapter<String>adapter;
-    ListView sintomasListViewSintomas;
-    int posicionItemPopuMenuPresionado;
+    ListView enfermedades_lista_listView_enfermedades;
     Bundle bundle;
+    ArrayAdapter<String> adapter;
+    ArrayList<Enfermedad> arrayListEnfermedadesClass;
+    ArrayList<String> arrayListEnfermedadesString;
+    int posicionItemPopuMenuPresionado;
+    MenuInflater inflayer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        sintomasListViewSintomas = (ListView)findViewById(R.id.sintomasLisViewListaSintomas);
+        setContentView(R.layout.activity_enfermedades_lista);
 
-        //borrar TEMPORAL - OBTENER DESPUES DE LA BASE
+        enfermedades_lista_listView_enfermedades = (ListView)findViewById(R.id.enfermedades_lista_listView_enfermedades);
+
+
+
+
         llenarGlobal();
 
-        llenarListViewSintomas();
 
-        sintomasListViewSintomas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        llenarListViewEnfermedades();
+
+
+        enfermedades_lista_listView_enfermedades.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Global.posicionItemListViewPresionado = i;
                 showPopupMenu(view);
             }
         });
-
-
     }
 
     @Override
     protected void onResume() {
-
-        llenarListViewSintomas();
+        llenarListViewEnfermedades();
         super.onResume();
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_crud,menu);
@@ -65,46 +67,46 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.menuOpcionAgregar){
 
-
-            Intent intent = new Intent(getApplicationContext(),enfermedades_lista.class);
+            Intent intent = new Intent(getApplicationContext(),enfermedades_Agregar.class);
             startActivity(intent);
-
             //LO COMENTADO ES LO BUENO
 
-    //        Intent intent = new Intent(getApplicationContext(),sintomas_agregar.class);
-      //      startActivity(intent);
+            //        Intent intent = new Intent(getApplicationContext(),sintomas_agregar.class);
+            //      startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }
 
-    public void llenarGlobal(){
-        Sintoma sin1= new Sintoma(1,"Sintoma_1");
-        Sintoma sin2= new Sintoma(2,"Sintoma_2");
-        Sintoma sin3= new Sintoma(3,"Sintoma_3");
-        Sintoma sin4= new Sintoma(4,"Sintoma_4");
-
-        Global.listaSintomas.add(sin1);
-        Global.listaSintomas.add(sin2);
-        Global.listaSintomas.add(sin3);
-        Global.listaSintomas.add(sin4);
+    public void llenarListViewEnfermedades(){
+        arrayListEnfermedadesClass = Global.listaEnfermedades;
+        arrayListEnfermedadesString = convertirClass_String();
+        adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,arrayListEnfermedadesString);
+        enfermedades_lista_listView_enfermedades.setAdapter(adapter);
     }
-    public void llenarListViewSintomas(){
-        arrayListaSintomasClass = Global.listaSintomas;
-        arrayListaSintomasString = convertirClass_String();
-        adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,arrayListaSintomasString);
-        sintomasListViewSintomas.setAdapter(adapter);
+
+    public void llenarGlobal(){
+        Enfermedad en1= new Enfermedad(1,"Enfermedad_1","Esta es la enfermedad 1");
+        Enfermedad en2= new Enfermedad(2,"Enfermedad_2","Esta es la enfermedad 2");
+        Enfermedad en3= new Enfermedad(3,"Enfermedad_3","Esta es la enfermedad 3");
+        Enfermedad en4= new Enfermedad(4,"Enfermedad_4","Esta es la enfermedad 4");
+
+        Global.listaEnfermedades.add(en1);
+        Global.listaEnfermedades.add(en2);
+        Global.listaEnfermedades.add(en3);
+        Global.listaEnfermedades.add(en4);
     }
     public ArrayList<String> convertirClass_String(){
         ArrayList<String> listaTemp = new ArrayList<String>();
         String valor;
 
-        for (int i=0;i<arrayListaSintomasClass.size();i++){
-            valor = arrayListaSintomasClass.get(i).getNombre();
+        for (int i=0;i<arrayListEnfermedadesClass.size();i++){
+            valor = arrayListEnfermedadesClass.get(i).getNombre();
             listaTemp.add(valor);
         }
 
         return listaTemp;
     }
+
     public void showPopupMenu(final View view){
 
         PopupMenu popupMenu = new PopupMenu(this, view);
@@ -116,12 +118,12 @@ public class MainActivity extends AppCompatActivity {
 
                     bundle = new Bundle();
                     bundle.putString("valor",Integer.toString(Global.posicionItemListViewPresionado));
-                    Intent intent = new Intent(getApplicationContext(),editar_Sintomas.class);
+                    Intent intent = new Intent(getApplicationContext(),editar_enfermedades.class);
                     intent.putExtras(bundle);
                     startActivity(intent);
                 }
                 else{
-                    new AlertDialog.Builder(MainActivity.this)
+                    new AlertDialog.Builder(enfermedades_lista.this)
 
                             .setMessage("¿Desea Eliminar?")
                             .setTitle("Confirmacion")
@@ -149,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
         popupMenu.show();
     }
     public void eliminar(int posicion){
-        Global.listaSintomas.remove(posicion);
+        Global.listaEnfermedades.remove(posicion);
         onResume();
     }
 }

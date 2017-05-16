@@ -29,7 +29,7 @@ public class sintomas_agregar extends AppCompatActivity {
                     nombre = sintomasAgregarInputNombre.getText().toString();
                     int idBorrar = 0;
                     Sintoma sintoma = new Sintoma(idBorrar,nombre);
-                    Global.lista.add(sintoma);
+                    Global.listaSintomas.add(sintoma);
                     finish();
                 }
             }

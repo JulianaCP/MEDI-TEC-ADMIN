@@ -2,11 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/sintomasMenuOpcionEditar"
-        android:title="Editar"
-        />
-    <item
-        android:id="@+id/sintomasMenuOpcionEliminar"
-        android:title="Eliminar"
+        android:id="@+id/menuOpcionAgregar"
+        android:title="Agregar"
+        app:showAsAction="always"
         />
 </menu>

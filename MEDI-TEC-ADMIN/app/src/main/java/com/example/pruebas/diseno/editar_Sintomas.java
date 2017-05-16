@@ -20,12 +20,12 @@ public class editar_Sintomas extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_editar__sintomas);
+        setContentView(R.layout.activity_editar_sintomas);
         bundle = getIntent().getExtras();
         valorString = bundle.getString("valor");
         valorInt = Integer.parseInt(valorString);
 
-        sintomaEditar = Global.lista.get(valorInt); //obtengo sintoma
+        sintomaEditar = Global.listaSintomas.get(valorInt); //obtengo sintoma
 
 
         editarSintmasInputNombre = (EditText)findViewById(R.id.editarSintomasInputNombre);
@@ -42,7 +42,7 @@ public class editar_Sintomas extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),"nombre Vacio",Toast.LENGTH_LONG).show();
                 }
                 else{
-                    Global.lista.get(valorInt).setNombre(nuevoNombre);
+                    Global.listaSintomas.get(valorInt).setNombre(nuevoNombre);
                     finish();
                 }
 
