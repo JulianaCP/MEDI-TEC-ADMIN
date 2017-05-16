@@ -1,7 +1,7 @@
 package com.example.pruebas.diseno;
 
 /**
- * Created by Pruebas on 13/05/2017.
+ * Created by Juliana on 13/05/2017.
  */
 public class Sintoma {
     int id;
