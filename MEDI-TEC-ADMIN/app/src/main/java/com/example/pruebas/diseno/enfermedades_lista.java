@@ -17,6 +17,12 @@ import android.widget.PopupMenu;
 
 import java.util.ArrayList;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class enfermedades_lista extends AppCompatActivity {
 
     ListView enfermedades_lista_listView_enfermedades;
@@ -81,15 +87,29 @@ public class enfermedades_lista extends AppCompatActivity {
     }
 
     public void llenarGlobal(){
-        Enfermedad en1= new Enfermedad(1,"Enfermedad_1","Esta es la enfermedad 1");
-        Enfermedad en2= new Enfermedad(2,"Enfermedad_2","Esta es la enfermedad 2");
-        Enfermedad en3= new Enfermedad(3,"Enfermedad_3","Esta es la enfermedad 3");
-        Enfermedad en4= new Enfermedad(4,"Enfermedad_4","Esta es la enfermedad 4");
 
-        Global.listaEnfermedades.add(en1);
-        Global.listaEnfermedades.add(en2);
-        Global.listaEnfermedades.add(en3);
-        Global.listaEnfermedades.add(en4);
+
+
+        final Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(Global.getBaseUrl())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        Servidor servidor = retrofit.create(Servidor.class);
+
+        Call<Enfermedad> call = servidor.obtenerEnfermedades();
+
+        call.enqueue(new Callback<Enfermedad>() {
+            @Override
+            public void onResponse(Call<Enfermedad> call, Response<Enfermedad> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<Enfermedad> call, Throwable t) {
+
+            }
+        });
     }
     public ArrayList<String> convertirClass_String(){
         ArrayList<String> listaTemp = new ArrayList<String>();
