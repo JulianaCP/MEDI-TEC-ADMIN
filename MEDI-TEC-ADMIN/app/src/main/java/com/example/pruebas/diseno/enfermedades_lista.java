@@ -16,6 +16,7 @@ import android.widget.ListView;
 import android.widget.PopupMenu;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -97,19 +98,19 @@ public class enfermedades_lista extends AppCompatActivity {
 
         Servidor servidor = retrofit.create(Servidor.class);
 
-        Call<Enfermedad> call = servidor.obtenerEnfermedades();
+        Call<List<Enfermedad>> call = servidor.obtenerEnfermedades();
 
-        call.enqueue(new Callback<Enfermedad>() {
+        call.enqueue(new Callback<List<Enfermedad>>() {
             @Override
-            public void onResponse(Call<Enfermedad> call, Response<Enfermedad> response) {
+            public void onResponse(Call<List<Enfermedad>> call, Response<List<Enfermedad>> response) {
 
             }
 
             @Override
-            public void onFailure(Call<Enfermedad> call, Throwable t) {
+            public void onFailure(Call<List<Enfermedad>> call, Throwable t) {
 
             }
-        });
+        })
     }
     public ArrayList<String> convertirClass_String(){
         ArrayList<String> listaTemp = new ArrayList<String>();
