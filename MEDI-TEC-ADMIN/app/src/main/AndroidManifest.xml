@@ -22,7 +22,8 @@
         <activity android:name=".enfermedades_Agregar" />
         <activity android:name=".medicamentos_lista" />
         <activity android:name=".editar_medicamentos" />
-        <activity android:name=".medicamentos_agregar"></activity>
+        <activity android:name=".medicamentos_agregar" />
+        <activity android:name=".asignar_sintoma_enfermedad"></activity>
     </application>
 
 </manifest>
