@@ -110,7 +110,7 @@ public class enfermedades_lista extends AppCompatActivity {
             public void onFailure(Call<List<Enfermedad>> call, Throwable t) {
 
             }
-        })
+        });
     }
     public ArrayList<String> convertirClass_String(){
         ArrayList<String> listaTemp = new ArrayList<String>();
