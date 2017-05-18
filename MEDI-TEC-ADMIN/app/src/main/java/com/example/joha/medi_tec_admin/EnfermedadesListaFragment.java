@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
@@ -22,6 +23,12 @@ import android.widget.PopupMenu;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 /**
@@ -76,18 +83,7 @@ public class EnfermedadesListaFragment extends Fragment {
         llenarListViewEnfermedades();
         super.onResume();
     }
-
-    public void llenarListViewEnfermedades(){
-        arrayListEnfermedadesClass = Global.listaEnfermedades;
-        arrayListEnfermedadesString = convertirClass_String();
-        adapter = new ArrayAdapter<String>(getActivity().getApplicationContext(),android.R.layout.simple_list_item_1,arrayListEnfermedadesString);
-        enfermedades_lista_listView_enfermedades.setAdapter(adapter);
-    }
-
-    /*public void llenarGlobal(){
-
-
-
+    public void obtenerDatos(){
         final Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Global.getBaseUrl())
                 .addConverterFactory(GsonConverterFactory.create())
@@ -95,20 +91,30 @@ public class EnfermedadesListaFragment extends Fragment {
 
         Servidor servidor = retrofit.create(Servidor.class);
 
-        Call<List<Enfermedad>> call = servidor.obtenerEnfermedades();
+        Call<ArrayList<Enfermedad>> call= servidor.obtenerListaEnfermedades();
 
-        call.enqueue(new Callback<List<Enfermedad>>() {
+        call.enqueue(new Callback<ArrayList<Enfermedad>>() {
             @Override
-            public void onResponse(Call<List<Enfermedad>> call, Response<List<Enfermedad>> response) {
-
+            public void onResponse(Call<ArrayList<Enfermedad>> call, Response<ArrayList<Enfermedad>> response) {
+                Global.listaEnfermedades = response.body();
             }
 
             @Override
-            public void onFailure(Call<List<Enfermedad>> call, Throwable t) {
-
+            public void onFailure(Call<ArrayList<Enfermedad>> call, Throwable t) {
+                Snackbar.make(getView(), "Fallo: "+ t.getMessage(), Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
             }
         });
-    }*/
+    }
+
+    public void llenarListViewEnfermedades(){
+        obtenerDatos();
+        arrayListEnfermedadesClass = Global.listaEnfermedades;
+        arrayListEnfermedadesString = convertirClass_String();
+        adapter = new ArrayAdapter<String>(getActivity().getApplicationContext(),android.R.layout.simple_list_item_1,arrayListEnfermedadesString);
+        enfermedades_lista_listView_enfermedades.setAdapter(adapter);
+    }
+
     public ArrayList<String> convertirClass_String(){
         ArrayList<String> listaTemp = new ArrayList<String>();
         String valor;

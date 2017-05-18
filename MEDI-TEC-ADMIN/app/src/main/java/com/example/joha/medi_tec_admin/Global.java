@@ -11,7 +11,7 @@ public class Global {
     static ArrayList<Medicamento>  listaMedicamentos = new ArrayList<Medicamento>();
     static int posicionItemListViewPresionado;
 
-    private static String baseurl ="http://172.24.42.196:8090";
+    private static String baseurl ="http://172.24.41.77:8090";
 
     public static String getBaseUrl(){
         return baseurl;
