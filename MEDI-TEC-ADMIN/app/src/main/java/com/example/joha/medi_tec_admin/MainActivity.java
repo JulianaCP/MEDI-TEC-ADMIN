@@ -59,9 +59,9 @@ public class MainActivity extends AppCompatActivity
             FragmentManager manager = getSupportFragmentManager();
             manager.beginTransaction().replace(R.id.ContentForFragments, medicamentosLista).commit();
         } else if (id == R.id.SintomasItM) {
-            LogoFragment logoFragment = new LogoFragment();
+            SintomasListaFragment sintomasListaFragment = new SintomasListaFragment();
             FragmentManager manager = getSupportFragmentManager();
-            manager.beginTransaction().replace(R.id.ContentForFragments, logoFragment).commit();
+            manager.beginTransaction().replace(R.id.ContentForFragments, sintomasListaFragment).commit();
         } else if (id == R.id.PrincipalItM) {
             LogoFragment logoFragment = new LogoFragment();
             FragmentManager manager = getSupportFragmentManager();
