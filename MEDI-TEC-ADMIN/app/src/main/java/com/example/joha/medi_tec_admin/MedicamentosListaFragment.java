@@ -22,7 +22,11 @@ import android.widget.PopupMenu;
 
 import java.util.ArrayList;
 
-
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 /**
@@ -82,9 +86,33 @@ public class MedicamentosListaFragment extends Fragment {
         llenarListViewMedicamentos();
         super.onResume();
     }
+    public void obtenerDatos(){
+        final Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(Global.getBaseUrl())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        Servidor servidor = retrofit.create(Servidor.class);
+
+        Call<ArrayList<Medicamento>> call= servidor.obtenerListaMedicamentos();
+
+        call.enqueue(new Callback<ArrayList<Medicamento>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Medicamento>> call, Response<ArrayList<Medicamento>> response) {
+                Global.listaMedicamentos = response.body();
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Medicamento>> call, Throwable t) {
+                Snackbar.make(getView(), "Fallo: "+ t.getMessage(), Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+    }
 
 
     public void llenarListViewMedicamentos(){
+        obtenerDatos();
         arrayListaMedicamentosClass = Global.listaMedicamentos;
         arrayListaMedicamentosString = convertirClass_String();
         adapter = new ArrayAdapter<String>(getActivity().getApplicationContext(),android.R.layout.simple_list_item_1 , arrayListaMedicamentosString);

@@ -14,5 +14,5 @@ public interface Servidor {
     Call<ArrayList<Enfermedad>> obtenerListaEnfermedades();
 
     @GET("/medicamentos/obtener")
-    Call<ArrayList<Enfermedad>> obtenerListaMedicamentos();
+    Call<ArrayList<Medicamento>> obtenerListaMedicamentos();
 }
