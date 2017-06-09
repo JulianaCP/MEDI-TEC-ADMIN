@@ -42,11 +42,13 @@ public class EnfermedadesListaFragment extends Fragment {
     ArrayList<Enfermedad> arrayListEnfermedadesClass;
     ArrayList<String> arrayListEnfermedadesString;
     int posicionItemPopuMenuPresionado;
+    int idEnfermedad;
     MenuInflater inflayer;
 
     public EnfermedadesListaFragment() {
         // Required empty public constructor
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,7 +57,7 @@ public class EnfermedadesListaFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_enfermedades_lista, container, false);
         enfermedades_lista_listView_enfermedades = (ListView) rootView.findViewById(R.id.enfermedades_lista_listView_enfermedades);
         //llenarGlobal();
-        llenarListViewEnfermedades();
+        obtenerDatos();
         enfermedades_lista_listView_enfermedades.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -79,7 +81,7 @@ public class EnfermedadesListaFragment extends Fragment {
 
     @Override
     public void onResume() {
-        llenarListViewEnfermedades();
+        obtenerDatos();
         super.onResume();
     }
     public void obtenerDatos(){
@@ -96,6 +98,7 @@ public class EnfermedadesListaFragment extends Fragment {
             @Override
             public void onResponse(Call<ArrayList<Enfermedad>> call, Response<ArrayList<Enfermedad>> response) {
                 Global.listaEnfermedades = response.body();
+                llenarListViewEnfermedades();
             }
 
             @Override
@@ -107,7 +110,6 @@ public class EnfermedadesListaFragment extends Fragment {
     }
 
     public void llenarListViewEnfermedades(){
-        obtenerDatos();
         arrayListEnfermedadesClass = Global.listaEnfermedades;
         arrayListEnfermedadesString = convertirClass_String();
         adapter = new ArrayAdapter<String>(getActivity().getApplicationContext(),android.R.layout.simple_list_item_1,arrayListEnfermedadesString);
@@ -133,7 +135,7 @@ public class EnfermedadesListaFragment extends Fragment {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
                 posicionItemPopuMenuPresionado = menuItem.getItemId();
-                if(posicionItemPopuMenuPresionado == R.id.menuOpcionEditar){
+                if(posicionItemPopuMenuPresionado == R.id.menuOpcionEditarEnfermedad){
 
                     /*bundle = new Bundle();
                     bundle.putString("valor",Integer.toString(Global.posicionItemListViewPresionado));
@@ -144,7 +146,7 @@ public class EnfermedadesListaFragment extends Fragment {
                     FragmentManager manager = getActivity().getSupportFragmentManager();
                     manager.beginTransaction().replace(R.id.ContentForFragments, editarEnfermedadFragment).commit();
                 }
-                else{
+                else if(posicionItemPopuMenuPresionado == R.id.menuOpcionEliminarEnfermedad){
                     new AlertDialog.Builder(getActivity())
 
                             .setMessage("¿Desea Eliminar?")
@@ -165,16 +167,42 @@ public class EnfermedadesListaFragment extends Fragment {
                             }).create().show();
 
                 }
+                else{
+                    asignarSintomaEnfermedadFragment asignarSintomaEnfermedadFragment = new asignarSintomaEnfermedadFragment();
+                    FragmentManager manager = getActivity().getSupportFragmentManager();
+                    manager.beginTransaction().replace(R.id.ContentForFragments, asignarSintomaEnfermedadFragment).commit();
+                }
                 return true;
             }
         });
         inflayer = getActivity().getMenuInflater();
-        inflayer.inflate(R.menu.popup_menu,popupMenu.getMenu());
+        inflayer.inflate(R.menu.popup_menu_enfermedad,popupMenu.getMenu());
         popupMenu.show();
     }
     public void eliminar(int posicion){
-        Global.listaEnfermedades.remove(posicion);
-        onResume();
+        idEnfermedad=Global.listaEnfermedades.get(posicion).getIdEnfermedad();
+
+        final Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(Global.getBaseUrl())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        Servidor servidor = retrofit.create(Servidor.class);
+        Call<Boolean> call = servidor.eliminarEnfermedad(idEnfermedad);
+        call.enqueue(new Callback<Boolean>() {
+            @Override
+            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                Snackbar.make(getView(), "Eliminacion exitosa", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+                onResume();
+            }
+
+            @Override
+            public void onFailure(Call<Boolean> call, Throwable t) {
+                Snackbar.make(getView(), "Error eliminacion", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+
     }
 
 }

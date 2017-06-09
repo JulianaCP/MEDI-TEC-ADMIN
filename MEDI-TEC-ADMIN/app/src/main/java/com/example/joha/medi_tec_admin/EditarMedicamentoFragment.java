@@ -13,6 +13,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,6 +31,8 @@ public class EditarMedicamentoFragment extends Fragment {
     private String stringNombre,stringDescripcion;
     private String valorString;
     private int valorInt;
+
+    int idMedicamento;
 
     Medicamento medicamento;
     public EditarMedicamentoFragment() {
@@ -47,6 +55,7 @@ public class EditarMedicamentoFragment extends Fragment {
 
 
         medicamento = Global.listaMedicamentos.get(valorInt);
+        idMedicamento = medicamento.getIdMedicamento();
         stringNombre = medicamento.getNombre();
         stringDescripcion = medicamento.getDescripcion();
 
@@ -74,11 +83,27 @@ public class EditarMedicamentoFragment extends Fragment {
                     stringNombre = input_nombre.getText().toString();
                     stringDescripcion = input_descripcion.getText().toString();
 
+                    final Retrofit retrofit = new Retrofit.Builder()
+                            .baseUrl(Global.getBaseUrl())
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
+                    Servidor servidor = retrofit.create(Servidor.class);
+                    Call<Boolean> call = servidor.modificarMedicamento(idMedicamento,stringNombre,stringDescripcion);
+                    call.enqueue(new Callback<Boolean>() {
+                        @Override
+                        public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                            Snackbar.make(getView(), "Modificacion exitosa", Snackbar.LENGTH_LONG)
+                                    .setAction("Action", null).show();
+                            goPreviousFragment();
+                        }
 
+                        @Override
+                        public void onFailure(Call<Boolean> call, Throwable t) {
+                            Snackbar.make(getView(), "Error Modificacion", Snackbar.LENGTH_LONG)
+                                    .setAction("Action", null).show();
+                        }
+                    });
 
-                    Global.listaMedicamentos.get(valorInt).setNombre(stringNombre);
-                    Global.listaMedicamentos.get(valorInt).setDescripcion(stringDescripcion);
-                    goPreviousFragment();
                 }
             }
         });

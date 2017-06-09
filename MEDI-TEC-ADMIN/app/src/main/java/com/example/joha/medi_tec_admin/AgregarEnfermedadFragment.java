@@ -12,6 +12,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -60,10 +66,26 @@ public class AgregarEnfermedadFragment extends Fragment {
                     stringNombre = input_nombre.getText().toString();
                     stringDescripcion = input_descripcion.getText().toString();
 
-                    int idBorrar = 0;
-                    Enfermedad enfer = new Enfermedad(idBorrar,stringNombre,stringDescripcion);
-                    Global.listaEnfermedades.add(enfer);
-                    goPreviousFragment();
+                    final Retrofit retrofit = new Retrofit.Builder()
+                            .baseUrl(Global.getBaseUrl())
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
+                    Servidor servidor = retrofit.create(Servidor.class);
+                    Call<Boolean> call = servidor.insertarEnfermedades(stringNombre,stringDescripcion);
+                    call.enqueue(new Callback<Boolean>() {
+                        @Override
+                        public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                            Snackbar.make(getView(), "Inserccion exitosa", Snackbar.LENGTH_LONG)
+                                    .setAction("Action", null).show();
+                            goPreviousFragment();
+                        }
+
+                        @Override
+                        public void onFailure(Call<Boolean> call, Throwable t) {
+                            Snackbar.make(getView(), "Error inserccion", Snackbar.LENGTH_LONG)
+                                    .setAction("Action", null).show();
+                        }
+                    });
                 }
             }
         });

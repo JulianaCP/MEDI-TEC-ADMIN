@@ -56,7 +56,8 @@ public class MedicamentosListaFragment extends Fragment {
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         medicamentos_lista_ListViewMedicamentos = (ListView) rootView.findViewById(R.id.medicamentos_lista_listView_medicamentos);
 
-        llenarListViewMedicamentos();
+        obtenerDatos();
+
 
         medicamentos_lista_ListViewMedicamentos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -66,8 +67,8 @@ public class MedicamentosListaFragment extends Fragment {
             }
         });
 
-        FloatingActionButton btnAgregarMedicamento = (FloatingActionButton) rootView.findViewById(R.id.btnAgregarMedicamento);
-        btnAgregarMedicamento.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.btnAgregarMedicamento);
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 AgregarMedicamentosFragment agregarMedicamentosFragment = new AgregarMedicamentosFragment();
@@ -83,7 +84,7 @@ public class MedicamentosListaFragment extends Fragment {
 
     @Override
     public void onResume() {
-        llenarListViewMedicamentos();
+        obtenerDatos();
         super.onResume();
     }
     public void obtenerDatos(){
@@ -100,6 +101,7 @@ public class MedicamentosListaFragment extends Fragment {
             @Override
             public void onResponse(Call<ArrayList<Medicamento>> call, Response<ArrayList<Medicamento>> response) {
                 Global.listaMedicamentos = response.body();
+                llenarListViewMedicamentos();
             }
 
             @Override
@@ -112,7 +114,8 @@ public class MedicamentosListaFragment extends Fragment {
 
 
     public void llenarListViewMedicamentos(){
-        obtenerDatos();
+        Snackbar.make(getView(), "despues: ", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
         arrayListaMedicamentosClass = Global.listaMedicamentos;
         arrayListaMedicamentosString = convertirClass_String();
         adapter = new ArrayAdapter<String>(getActivity().getApplicationContext(),android.R.layout.simple_list_item_1 , arrayListaMedicamentosString);

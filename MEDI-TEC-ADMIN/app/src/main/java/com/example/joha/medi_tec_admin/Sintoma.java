@@ -4,19 +4,19 @@ package com.example.joha.medi_tec_admin;
  * Created by Juliana on 13/05/2017.
  */
 public class Sintoma {
-    int id;
+    int idSintoma;
     String nombre;
     public Sintoma(int idVar, String nom){
-        this.id = idVar;
+        this.idSintoma = idVar;
         this.nombre = nom;
     }
 
     public int getId() {
-        return id;
+        return idSintoma;
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.idSintoma = id;
     }
 
     public String getNombre() {
