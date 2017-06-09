@@ -12,26 +12,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.joha.medi_tec_admin.Global;
-import com.example.joha.medi_tec_admin.MedicamentosListaFragment;
-import com.example.joha.medi_tec_admin.R;
-import com.example.joha.medi_tec_admin.Sintoma;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class EditarSintomasFragment extends Fragment {
+public class AgregarSintomasFragment extends Fragment {
 
-    EditText editarSintmasInputNombre;
-    Button editsrSintomasButtonAceptar;
-    Bundle bundle;
-    String valorString, nuevoNombre;
-    int valorInt;
+    Button sintomasAgregarButtonAceptar;
+    EditText sintomasAgregarInputNombre;
+    String nombre;
     private View rootView;
 
-    Sintoma sintomaEditar;
-
-    public EditarSintomasFragment() {
+    public AgregarSintomasFragment() {
         // Required empty public constructor
     }
 
@@ -40,28 +32,27 @@ public class EditarSintomasFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        rootView = inflater.inflate(R.layout.fragment_editar_sintomas, container, false);
-        valorInt = Global.posicionItemListViewPresionado;
-        editarSintmasInputNombre = (EditText) rootView.findViewById(R.id.editarSintomasInputNombre);
-        editsrSintomasButtonAceptar = (Button) rootView.findViewById(R.id.editarSintomasButtonAceptar);
-        sintomaEditar = Global.listaSintomas.get(valorInt);
-        editarSintmasInputNombre.setText(sintomaEditar.getNombre());
-        editsrSintomasButtonAceptar.setOnClickListener(new View.OnClickListener() {
+        rootView = inflater.inflate(R.layout.fragment_agregar_sintomas, container, false);
+        sintomasAgregarButtonAceptar = (Button) rootView.findViewById(R.id.sintomasAgregarButtonAceptar);
+        sintomasAgregarInputNombre = (EditText) rootView.findViewById(R.id.sintomasAgregarInpuNombre);
+
+        sintomasAgregarButtonAceptar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                nuevoNombre = editarSintmasInputNombre.getText().toString();
-                if(editarSintmasInputNombre.getText().toString().equals("")){
+                if(sintomasAgregarInputNombre.getText().toString().equals("")){
                     Snackbar.make(view, "Nombre vacio", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 }
                 else{
-                    Global.listaSintomas.get(valorInt).setNombre(nuevoNombre);
+                    nombre = sintomasAgregarInputNombre.getText().toString();
+                    int idBorrar = 0;
+                    Sintoma sintoma = new Sintoma(idBorrar,nombre);
+                    Global.listaSintomas.add(sintoma);
                     goPreviousFragment();
                 }
-
             }
         });
-        return rootView;
+        return inflater.inflate(R.layout.fragment_agregar_sintomas, container, false);
     }
 
     private void goPreviousFragment() {
@@ -69,5 +60,4 @@ public class EditarSintomasFragment extends Fragment {
         FragmentManager manager = getActivity().getSupportFragmentManager();
         manager.beginTransaction().replace(R.id.ContentForFragments, sintomasListaFragment).commit();
     }
-
 }

@@ -1,6 +1,5 @@
 package com.example.joha.medi_tec_admin;
 
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,18 +10,17 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,29 +32,33 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class EnfermedadesListaFragment extends Fragment {
-    private View rootView;
-    ListView enfermedades_lista_listView_enfermedades;
-    Bundle bundle;
-    ArrayAdapter<String> adapter;
-    ArrayList<Enfermedad> arrayListEnfermedadesClass;
-    ArrayList<String> arrayListEnfermedadesString;
-    int posicionItemPopuMenuPresionado;
-    MenuInflater inflayer;
+public class MedicamentosListaFragment extends Fragment {
 
-    public EnfermedadesListaFragment() {
+    private MenuInflater inflayer;
+    private ArrayList<Medicamento> arrayListaMedicamentosClass;
+    private ArrayList<String> arrayListaMedicamentosString;
+    private ArrayAdapter<String> adapter;
+    private View rootView;
+    private ListView medicamentos_lista_ListViewMedicamentos;
+    private int posicionItemPopuMenuPresionado;
+    private Bundle bundle;
+
+    public MedicamentosListaFragment() {
         // Required empty public constructor
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment}
-        rootView = inflater.inflate(R.layout.fragment_enfermedades_lista, container, false);
-        enfermedades_lista_listView_enfermedades = (ListView) rootView.findViewById(R.id.enfermedades_lista_listView_enfermedades);
-        //llenarGlobal();
-        llenarListViewEnfermedades();
-        enfermedades_lista_listView_enfermedades.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        // Inflate the layout for this fragment
+        rootView = inflater.inflate(R.layout.fragment_medicamentos_lista, container, false);
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        medicamentos_lista_ListViewMedicamentos = (ListView) rootView.findViewById(R.id.medicamentos_lista_listView_medicamentos);
+
+        llenarListViewMedicamentos();
+
+        medicamentos_lista_ListViewMedicamentos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Global.posicionItemListViewPresionado = i;
@@ -64,22 +66,24 @@ public class EnfermedadesListaFragment extends Fragment {
             }
         });
 
-        FloatingActionButton btnAgregarMedicamento = (FloatingActionButton) rootView.findViewById(R.id.btnAgregarEnfermedad);
+        FloatingActionButton btnAgregarMedicamento = (FloatingActionButton) rootView.findViewById(R.id.btnAgregarMedicamento);
         btnAgregarMedicamento.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AgregarEnfermedadFragment agregarEnfermedadFragment = new AgregarEnfermedadFragment();
+                AgregarMedicamentosFragment agregarMedicamentosFragment = new AgregarMedicamentosFragment();
                 FragmentManager manager = getActivity().getSupportFragmentManager();
-                manager.beginTransaction().replace(R.id.ContentForFragments, agregarEnfermedadFragment).commit();
+                manager.beginTransaction().replace(R.id.ContentForFragments, agregarMedicamentosFragment).commit();
             }
         });
 
         return rootView;
     }
 
+
+
     @Override
     public void onResume() {
-        llenarListViewEnfermedades();
+        llenarListViewMedicamentos();
         super.onResume();
     }
     public void obtenerDatos(){
@@ -90,39 +94,38 @@ public class EnfermedadesListaFragment extends Fragment {
 
         Servidor servidor = retrofit.create(Servidor.class);
 
-        Call<ArrayList<Enfermedad>> call= servidor.obtenerListaEnfermedades();
+        Call<ArrayList<Medicamento>> call= servidor.obtenerListaMedicamentos();
 
-        call.enqueue(new Callback<ArrayList<Enfermedad>>() {
+        call.enqueue(new Callback<ArrayList<Medicamento>>() {
             @Override
-            public void onResponse(Call<ArrayList<Enfermedad>> call, Response<ArrayList<Enfermedad>> response) {
-                Global.listaEnfermedades = response.body();
+            public void onResponse(Call<ArrayList<Medicamento>> call, Response<ArrayList<Medicamento>> response) {
+                Global.listaMedicamentos = response.body();
             }
 
             @Override
-            public void onFailure(Call<ArrayList<Enfermedad>> call, Throwable t) {
+            public void onFailure(Call<ArrayList<Medicamento>> call, Throwable t) {
                 Snackbar.make(getView(), "Fallo: "+ t.getMessage(), Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
     }
 
-    public void llenarListViewEnfermedades(){
-        obtenerDatos();
-        arrayListEnfermedadesClass = Global.listaEnfermedades;
-        arrayListEnfermedadesString = convertirClass_String();
-        adapter = new ArrayAdapter<String>(getActivity().getApplicationContext(),android.R.layout.simple_list_item_1,arrayListEnfermedadesString);
-        enfermedades_lista_listView_enfermedades.setAdapter(adapter);
-    }
 
+    public void llenarListViewMedicamentos(){
+        obtenerDatos();
+        arrayListaMedicamentosClass = Global.listaMedicamentos;
+        arrayListaMedicamentosString = convertirClass_String();
+        adapter = new ArrayAdapter<String>(getActivity().getApplicationContext(),android.R.layout.simple_list_item_1 , arrayListaMedicamentosString);
+        medicamentos_lista_ListViewMedicamentos.setAdapter(adapter);
+    }
     public ArrayList<String> convertirClass_String(){
         ArrayList<String> listaTemp = new ArrayList<String>();
         String valor;
 
-        for (int i=0;i<arrayListEnfermedadesClass.size();i++){
-            valor = arrayListEnfermedadesClass.get(i).getNombre();
+        for (int i=0;i<arrayListaMedicamentosClass.size();i++){
+            valor = arrayListaMedicamentosClass.get(i).getNombre();
             listaTemp.add(valor);
         }
-
         return listaTemp;
     }
 
@@ -134,15 +137,16 @@ public class EnfermedadesListaFragment extends Fragment {
             public boolean onMenuItemClick(MenuItem menuItem) {
                 posicionItemPopuMenuPresionado = menuItem.getItemId();
                 if(posicionItemPopuMenuPresionado == R.id.menuOpcionEditar){
-
-                    /*bundle = new Bundle();
+/*
+                    bundle = new Bundle();
                     bundle.putString("valor",Integer.toString(Global.posicionItemListViewPresionado));
-                    Intent intent = new Intent(getApplicationContext(),editar_enfermedades.class);
+                    Intent intent = new Intent(getApplicationContext(),editar_medicamentos.class);
                     intent.putExtras(bundle);
                     startActivity(intent);*/
-                    EditarEnfermedadFragment editarEnfermedadFragment = new EditarEnfermedadFragment();
+                    EditarMedicamentoFragment editarMedicamentoFragment = new EditarMedicamentoFragment();
                     FragmentManager manager = getActivity().getSupportFragmentManager();
-                    manager.beginTransaction().replace(R.id.ContentForFragments, editarEnfermedadFragment).commit();
+                    manager.beginTransaction().replace(R.id.ContentForFragments, editarMedicamentoFragment).commit();
+
                 }
                 else{
                     new AlertDialog.Builder(getActivity())
@@ -163,7 +167,6 @@ public class EnfermedadesListaFragment extends Fragment {
                                     dialog.cancel();
                                 }
                             }).create().show();
-
                 }
                 return true;
             }
@@ -173,7 +176,7 @@ public class EnfermedadesListaFragment extends Fragment {
         popupMenu.show();
     }
     public void eliminar(int posicion){
-        Global.listaEnfermedades.remove(posicion);
+        Global.listaMedicamentos.remove(posicion);
         onResume();
     }
 

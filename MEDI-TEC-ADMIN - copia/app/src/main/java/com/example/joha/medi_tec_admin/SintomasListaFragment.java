@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
@@ -22,41 +21,40 @@ import android.widget.ListView;
 import android.widget.PopupMenu;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class EnfermedadesListaFragment extends Fragment {
-    private View rootView;
-    ListView enfermedades_lista_listView_enfermedades;
-    Bundle bundle;
-    ArrayAdapter<String> adapter;
-    ArrayList<Enfermedad> arrayListEnfermedadesClass;
-    ArrayList<String> arrayListEnfermedadesString;
-    int posicionItemPopuMenuPresionado;
-    MenuInflater inflayer;
+public class SintomasListaFragment extends Fragment {
 
-    public EnfermedadesListaFragment() {
+    private View rootView;
+    private MenuInflater inflayer;
+    private ArrayList<Sintoma> arrayListaSintomasClass;
+    private ArrayList<String> arrayListaSintomasString;
+    private ArrayAdapter<String> adapter;
+    private ListView sintomasListViewSintomas;
+    private int posicionItemPopuMenuPresionado;
+
+    public SintomasListaFragment() {
         // Required empty public constructor
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment}
-        rootView = inflater.inflate(R.layout.fragment_enfermedades_lista, container, false);
-        enfermedades_lista_listView_enfermedades = (ListView) rootView.findViewById(R.id.enfermedades_lista_listView_enfermedades);
-        //llenarGlobal();
-        llenarListViewEnfermedades();
-        enfermedades_lista_listView_enfermedades.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        // Inflate the layout for this fragment
+        rootView = inflater.inflate(R.layout.fragment_sintomas_lista, container, false);
+
+        sintomasListViewSintomas = (ListView) rootView.findViewById(R.id.sintomasLisViewListaSintomas);
+
+        //borrar TEMPORAL - OBTENER DESPUES DE LA BASE
+        llenarGlobal();
+
+        llenarListViewSintomas();
+
+        sintomasListViewSintomas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Global.posicionItemListViewPresionado = i;
@@ -64,13 +62,13 @@ public class EnfermedadesListaFragment extends Fragment {
             }
         });
 
-        FloatingActionButton btnAgregarMedicamento = (FloatingActionButton) rootView.findViewById(R.id.btnAgregarEnfermedad);
-        btnAgregarMedicamento.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton btnAgregarSintoma = (FloatingActionButton) rootView.findViewById(R.id.btnAgregarSintoma);
+        btnAgregarSintoma.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AgregarEnfermedadFragment agregarEnfermedadFragment = new AgregarEnfermedadFragment();
+                AgregarSintomasFragment agregarSintomasFragment = new AgregarSintomasFragment();
                 FragmentManager manager = getActivity().getSupportFragmentManager();
-                manager.beginTransaction().replace(R.id.ContentForFragments, agregarEnfermedadFragment).commit();
+                manager.beginTransaction().replace(R.id.ContentForFragments, agregarSintomasFragment).commit();
             }
         });
 
@@ -79,53 +77,39 @@ public class EnfermedadesListaFragment extends Fragment {
 
     @Override
     public void onResume() {
-        llenarListViewEnfermedades();
+
+        llenarListViewSintomas();
         super.onResume();
     }
-    public void obtenerDatos(){
-        final Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Global.getBaseUrl())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
 
-        Servidor servidor = retrofit.create(Servidor.class);
+    public void llenarGlobal(){
+        Sintoma sin1= new Sintoma(1,"Sintoma_1");
+        Sintoma sin2= new Sintoma(2,"Sintoma_2");
+        Sintoma sin3= new Sintoma(3,"Sintoma_3");
+        Sintoma sin4= new Sintoma(4,"Sintoma_4");
 
-        Call<ArrayList<Enfermedad>> call= servidor.obtenerListaEnfermedades();
-
-        call.enqueue(new Callback<ArrayList<Enfermedad>>() {
-            @Override
-            public void onResponse(Call<ArrayList<Enfermedad>> call, Response<ArrayList<Enfermedad>> response) {
-                Global.listaEnfermedades = response.body();
-            }
-
-            @Override
-            public void onFailure(Call<ArrayList<Enfermedad>> call, Throwable t) {
-                Snackbar.make(getView(), "Fallo: "+ t.getMessage(), Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        Global.listaSintomas.add(sin1);
+        Global.listaSintomas.add(sin2);
+        Global.listaSintomas.add(sin3);
+        Global.listaSintomas.add(sin4);
     }
-
-    public void llenarListViewEnfermedades(){
-        obtenerDatos();
-        arrayListEnfermedadesClass = Global.listaEnfermedades;
-        arrayListEnfermedadesString = convertirClass_String();
-        adapter = new ArrayAdapter<String>(getActivity().getApplicationContext(),android.R.layout.simple_list_item_1,arrayListEnfermedadesString);
-        enfermedades_lista_listView_enfermedades.setAdapter(adapter);
+    public void llenarListViewSintomas(){
+        arrayListaSintomasClass = Global.listaSintomas;
+        arrayListaSintomasString = convertirClass_String();
+        adapter = new ArrayAdapter<String>(getActivity().getApplicationContext(),android.R.layout.simple_list_item_1,arrayListaSintomasString);
+        sintomasListViewSintomas.setAdapter(adapter);
     }
-
     public ArrayList<String> convertirClass_String(){
         ArrayList<String> listaTemp = new ArrayList<String>();
         String valor;
 
-        for (int i=0;i<arrayListEnfermedadesClass.size();i++){
-            valor = arrayListEnfermedadesClass.get(i).getNombre();
+        for (int i=0;i<arrayListaSintomasClass.size();i++){
+            valor = arrayListaSintomasClass.get(i).getNombre();
             listaTemp.add(valor);
         }
 
         return listaTemp;
     }
-
     public void showPopupMenu(final View view){
 
         PopupMenu popupMenu = new PopupMenu(getActivity(), view);
@@ -137,12 +121,12 @@ public class EnfermedadesListaFragment extends Fragment {
 
                     /*bundle = new Bundle();
                     bundle.putString("valor",Integer.toString(Global.posicionItemListViewPresionado));
-                    Intent intent = new Intent(getApplicationContext(),editar_enfermedades.class);
+                    Intent intent = new Intent(getApplicationContext(),editar_Sintomas.class);
                     intent.putExtras(bundle);
                     startActivity(intent);*/
-                    EditarEnfermedadFragment editarEnfermedadFragment = new EditarEnfermedadFragment();
+                    EditarSintomasFragment editarSintomasFragment = new EditarSintomasFragment();
                     FragmentManager manager = getActivity().getSupportFragmentManager();
-                    manager.beginTransaction().replace(R.id.ContentForFragments, editarEnfermedadFragment).commit();
+                    manager.beginTransaction().replace(R.id.ContentForFragments, editarSintomasFragment).commit();
                 }
                 else{
                     new AlertDialog.Builder(getActivity())
@@ -172,9 +156,9 @@ public class EnfermedadesListaFragment extends Fragment {
         inflayer.inflate(R.menu.popup_menu,popupMenu.getMenu());
         popupMenu.show();
     }
+
     public void eliminar(int posicion){
-        Global.listaEnfermedades.remove(posicion);
+        Global.listaSintomas.remove(posicion);
         onResume();
     }
-
 }
