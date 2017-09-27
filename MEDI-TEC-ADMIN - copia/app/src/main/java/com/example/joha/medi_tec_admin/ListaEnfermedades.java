@@ -17,6 +17,6 @@ public class ListaEnfermedades {
         return instancia;
     }
 
-    public void
+
 
 }
