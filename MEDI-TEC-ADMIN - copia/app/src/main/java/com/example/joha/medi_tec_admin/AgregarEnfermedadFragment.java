@@ -59,7 +59,6 @@ public class AgregarEnfermedadFragment extends Fragment {
                 else{
                     stringNombre = input_nombre.getText().toString();
                     stringDescripcion = input_descripcion.getText().toString();
-
                     int idBorrar = 0;
                     Enfermedad enfer = new Enfermedad(idBorrar,stringNombre,stringDescripcion);
                     Global.listaEnfermedades.add(enfer);
