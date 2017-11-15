@@ -1,9 +1,5 @@
 package com.example.joha.medi_tec_admin;
 
-/**
- * Created by Bryan on 11/11/2017.
- */
-
 import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.test.ActivityInstrumentationTestCase2;
@@ -14,14 +10,10 @@ import org.junit.Test;
 import java.util.ArrayList;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 
 public class RendimientoEnfermedad {
     private ListaEnfermedades listaEnfermedades;
     private Enfermedad enfermedad;
-    private EnfermedadesListaFragment fragment;
-    private MainActivity testingActivity;
 
     @Before
     public void setUp() throws Exception {
@@ -40,14 +32,14 @@ public class RendimientoEnfermedad {
     //(1) Carga la lista de enfermedades con 200 datos en menos de 1.5 segundos
     @Test
     public void cargaListaDeEnfermedadesEnMenosDeX() throws Exception {
-        ListaEnfermedades mockitoEnf= mock(ListaEnfermedades.class);
+        ArrayList <Enfermedad> lista;
         double startTime = System.currentTimeMillis();
         System.out.print("\n\nTiempo inicial"+startTime);
-        EnfermedadesListaFragment nuevo= new EnfermedadesListaFragment();
-        mockitoEnf.leer(nuevo.getContext());
-        double endTime = System.currentTimeMillis() - startTime;
+            lista= listaEnfermedades.obtenerDatos();
+            double endTime = System.currentTimeMillis() - startTime;
         System.out.print("\n\nTiempo final: "+endTime/1000);
-        verify(mockitoEnf).leer(nuevo.getContext());
+
+        assertTrue(lista.size() == 200);
         assertTrue(1.5*1000 >= endTime);
     }
 
@@ -59,8 +51,8 @@ public class RendimientoEnfermedad {
 
         double startTime = System.currentTimeMillis();
         System.out.print("\n\nTiempo inicial"+startTime);
-        listaEnfermedades.addEnfermedadListaEnfermedades(enfermedad);
-        double endTime = System.currentTimeMillis() - startTime;
+            listaEnfermedades.addEnfermedadListaEnfermedades(enfermedad);
+            double endTime = System.currentTimeMillis() - startTime;
         System.out.print("\n\nTiempo final: "+endTime/1000);
 
         assertTrue(listaEnfermedades.lenListaEnfermedades()== 201);
@@ -70,14 +62,14 @@ public class RendimientoEnfermedad {
     //(7) Proceso de edición de enfermedad realizado en menos de 1 s
     @Test
     public void edicionEnfermedadEnMenosDeX() throws Exception {
-        Enfermedad mockitoEnf= mock(Enfermedad.class);
         double startTime = System.currentTimeMillis();
+
         System.out.print("\n\nTiempo inicial"+startTime);
-        EditarEnfermedadFragment nuevo= new EditarEnfermedadFragment();
-        mockitoEnf.editar(nuevo.getContext(),"Asma","es una enfermedad mala");
-        double endTime = System.currentTimeMillis() - startTime;
+            listaEnfermedades.editar(199,"Asma","es una enfermedad mala");
+            double endTime = System.currentTimeMillis() - startTime;
         System.out.print("\n\nTiempo final: "+endTime/1000);
-        verify(mockitoEnf).editar(nuevo.getContext(),"Asma","es una enfermedad mala");
+
+        assertEquals("actualizacion fallida","es una enfermedad mala",enfermedad.getDescripcion());
         assertTrue(1*1000 >= endTime);
     }
 
@@ -93,7 +85,7 @@ public class RendimientoEnfermedad {
         assertTrue(endTime <= 1*1000);
     }
 
-    //(15)Carga de datos en edición de enfermedad (datos de una enfermedad) realizado en menos de 0.5 s
+    //(15)Carga de datos en edición de enfermedad realizado en menos de 0.5 s
     @Test
     public void cargaDeDatosEnMenosDeX() throws Exception {
         double startTime = System.currentTimeMillis();
@@ -110,10 +102,11 @@ public class RendimientoEnfermedad {
     public void asignarPeligrosidad() throws Exception {
         double startTime = System.currentTimeMillis();
         System.out.print("\n\nTiempo inicial: "+startTime);
-        enfermedad.editarPeligrosidad("Alta");
-        assertEquals("no iguales","Alta",enfermedad.getPeligrosidad());
-        double endTime = System.currentTimeMillis() - startTime;
+            enfermedad.editarPeligrosidad("Alta");
+            assertEquals("no iguales","Alta",enfermedad.getPeligrosidad());
+            double endTime = System.currentTimeMillis() - startTime;
         System.out.print("\n\nTiempo final: "+endTime);
+        assertEquals("no iguales","Alta",enfermedad.getPeligrosidad());
         assertTrue(endTime <= 0.5*1000);
     }
 }

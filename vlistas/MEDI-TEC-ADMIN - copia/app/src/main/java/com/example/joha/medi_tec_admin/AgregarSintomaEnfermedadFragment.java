@@ -25,6 +25,7 @@ public class AgregarSintomaEnfermedadFragment extends Fragment {
     private static List<String> listaSintomasLocal;
     private View rootView;
     private ArrayList<SintomasEnfermedad> listaSintomas;
+    public SintomasEnfermedad sin= new SintomasEnfermedad();
     public AgregarSintomaEnfermedadFragment() {
         // Required empty public constructor
     }
@@ -65,11 +66,8 @@ public class AgregarSintomaEnfermedadFragment extends Fragment {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if (isChecked) {
-                        for (int i = 0; i < Global.listaSintomas.size(); i++) {
-                            if (Global.listaSintomas.get(i).getNombre().equals(listaSintomasLocal.get(position))) {
-                                enfermedad.setSintomas(Global.listaSintomas.get(i));
-                            }
-                        }
+                        SintomasEnfermedad nuevo= new SintomasEnfermedad();
+                        nuevo.insertar(enfermedad,listaSintomasLocal, position);
                         Toast.makeText(getActivity(), "Agregado", Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -113,9 +111,7 @@ public class AgregarSintomaEnfermedadFragment extends Fragment {
 
     public void obtenerDatos() {
         listaSintomasLocal = new ArrayList<>();
-        for (int i = 0; i < Global.listaSintomas.size(); i++) {
-            listaSintomasLocal.add(Global.listaSintomas.get(i).getNombre());
-        }
+        sin.cargarLista(listaSintomasLocal);
         cargarLista();
     }
 

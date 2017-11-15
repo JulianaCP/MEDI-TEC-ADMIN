@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -16,6 +17,7 @@ import static org.mockito.Mockito.verify;
 public class RendimientoMedicamento {
     private ListaMedicamentos listaMedicamentos;
     private Medicamento medicamento;
+    private List<String> listaMedicamentosL;
 
     @Before
     public void setUp() throws Exception {
@@ -23,7 +25,7 @@ public class RendimientoMedicamento {
         for(int i= 0; i < 200; i ++){
             this.medicamento = new Medicamento(i,"nuevo medicamento","para aliviar los malestares");
             this.listaMedicamentos.addMedicamentoListaMedicamentos(medicamento);
-            Global.listaMedicamentos.add(medicamento);
+
         }
     }
 
@@ -35,15 +37,14 @@ public class RendimientoMedicamento {
     //(3) Carga la lista de medicamentos menos de 1.5
     @Test
     public void cargaListaDeMedicEnMenosDeX() throws Exception {
-        ListaMedicamentos mockito= mock(ListaMedicamentos.class);
+        ArrayList<Medicamento>lis;
         double startTime = System.currentTimeMillis();
         System.out.print("\n\nTiempo inicial"+startTime);
-        MedicamentosListaFragment nuevo= new MedicamentosListaFragment();
-        mockito.leer(nuevo.getContext());
-        double endTime = System.currentTimeMillis() - startTime;
+            lis=listaMedicamentos.obtenerDatos();
+            double endTime = System.currentTimeMillis() - startTime;
         System.out.print("\n\nTiempo final: "+endTime/1000);
-        verify(mockito).leer(nuevo.getContext());
-        assertTrue(listaMedicamentos.lenListaMedicamentos() == 200);
+
+        assertTrue(lis.size() == 200);
         assertTrue(1.5*1000 >= endTime);
     }
 
@@ -53,12 +54,12 @@ public class RendimientoMedicamento {
         this.medicamento = new Medicamento(201,"nuevo medicamento","para aliviar los malestares");
 
         double startTime = System.currentTimeMillis();
-        listaMedicamentos.addMedicamentoListaMedicamentos(medicamento);
-        System.out.print("\n\nTiempo inicial"+startTime);
-        System.out.print("\n\nTiempo currente"+System.currentTimeMillis());
-        double endTime = System.currentTimeMillis() - startTime;
-
+            System.out.print("\n\nTiempo inicial"+startTime);
+            listaMedicamentos.addMedicamentoListaMedicamentos(medicamento);
+            System.out.print("\n\nTiempo currente"+System.currentTimeMillis());
+            double endTime = System.currentTimeMillis() - startTime;
         System.out.print("\n\nTiempo final: "+endTime/1000);
+
         assertTrue(listaMedicamentos.lenListaMedicamentos()== 201);
         assertTrue(0.8*1000 >= endTime);
     }
@@ -68,13 +69,12 @@ public class RendimientoMedicamento {
     public void edicionSintomaEnMenosDeX() throws Exception {
         double startTime = System.currentTimeMillis();
         System.out.print("\n\nTiempo inicial"+startTime);
-        medicamento.setNombre("medicamneto actualizado");
-        medicamento.setDescripcion("actualizado");
+        listaMedicamentos.editarMedicamento(199,"actualizado","medicamneto actualizado");
         double endTime = System.currentTimeMillis() - startTime;
         System.out.print("\n\nTiempo final: "+endTime/1000);
 
-        assertEquals("Actualizacion fallida","medicamneto actualizado",medicamento.getNombre());
-        assertEquals("Actualizacion fallida","actualizado",medicamento.getDescripcion());
+        assertEquals("Actualizacion fallida","medicamneto actualizado",medicamento.getDescripcion());
+        assertEquals("Actualizacion fallida","actualizado",medicamento.getNombre());
         assertTrue(1*1000 >= endTime);
     }
 
@@ -88,7 +88,6 @@ public class RendimientoMedicamento {
         System.out.print("\n\nTiempo currente: "+System.currentTimeMillis());
         double endTime = System.currentTimeMillis() - startTime;
         System.out.print("\n\nTiempo final: "+endTime/1000);
-
         assertEquals(199,listaMedicamentos.lenListaMedicamentos());
         assertTrue(endTime <= 1*1000);
     }
@@ -98,11 +97,12 @@ public class RendimientoMedicamento {
     public void cargaDeDatoMedicamentoEnfeEnMenosDeX() throws Exception {
         double startTime = System.currentTimeMillis();
         System.out.print("\n\nTiempo inicial: "+startTime);
-        ListaMedicamentosEnfermedad mockito= mock(ListaMedicamentosEnfermedad.class);
-        AgregarMedicamentoEnfermedadFragment nuevo= new AgregarMedicamentoEnfermedadFragment();
-        mockito.leer(nuevo.getContext());
-        double endTime = System.currentTimeMillis() - startTime;
+            listaMedicamentosL = new ArrayList<>();
+            MedicamentosEnfermedad nuevo= new MedicamentosEnfermedad();
+            nuevo.leer(listaMedicamentosL);
+            double endTime = System.currentTimeMillis() - startTime;
         System.out.print("\n\nTiempo final: "+endTime/1000);
+
         assertTrue(endTime <= 1.2*1000);
     }
 

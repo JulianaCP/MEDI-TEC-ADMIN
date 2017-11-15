@@ -65,11 +65,8 @@ public class AgregarMedicamentoEnfermedadFragment extends Fragment {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if (isChecked) {
-                        for (int i = 0; i < Global.listaMedicamentos.size(); i++) {
-                            if (Global.listaMedicamentos.get(i).getNombre().equals(listaMedicamentosLocal.get(position))) {
-                                enfermedad.setMedicamentos(Global.listaMedicamentos.get(i));
-                            }
-                        }
+                        MedicamentosEnfermedad nuevo= new MedicamentosEnfermedad();
+                        nuevo.insertar(enfermedad,listaMedicamentosLocal, position);
                         Toast.makeText(getActivity(), "Agregado", Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -86,9 +83,8 @@ public class AgregarMedicamentoEnfermedadFragment extends Fragment {
 
     public void obtenerDatos() {
         listaMedicamentosLocal = new ArrayList<>();
-        for (int i = 0; i < Global.listaMedicamentos.size(); i++) {
-            listaMedicamentosLocal.add(Global.listaMedicamentos.get(i).getNombre());
-        }
+        MedicamentosEnfermedad nuevo= new MedicamentosEnfermedad();
+        nuevo.leer(listaMedicamentosLocal);
         cargarLista();
     }
 

@@ -24,6 +24,7 @@ public class EditarEnfermedadFragment extends Fragment {
     Bundle bundle;
     String valorString;
     int valorInt;
+    ListaEnfermedades listaEnfermedad= new ListaEnfermedades();
     private View rootView;
     Enfermedad enfermedad;
 
@@ -75,8 +76,7 @@ public class EditarEnfermedadFragment extends Fragment {
                 else{
                     stringNombre = input_nombre.getText().toString();
                     stringDescripcion = input_descripcion.getText().toString();
-                    Global.listaEnfermedades.get(valorInt).setNombre(stringNombre);
-                    Global.listaEnfermedades.get(valorInt).setDescripcion(stringDescripcion);
+                    listaEnfermedad.editar(valorInt, stringNombre, stringDescripcion);
                     goPreviousFragment();
                 }
             }

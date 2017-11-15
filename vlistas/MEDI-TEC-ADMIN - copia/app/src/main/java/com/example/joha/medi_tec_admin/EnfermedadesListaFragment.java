@@ -38,6 +38,7 @@ public class EnfermedadesListaFragment extends Fragment {
     private View rootView;
     ListView enfermedades_lista_listView_enfermedades;
     Bundle bundle;
+    ListaEnfermedades enfermedadLista= new ListaEnfermedades();
     ArrayAdapter<String> adapter;
     ArrayList<Enfermedad> arrayListEnfermedadesClass;
     ArrayList<String> arrayListEnfermedadesString;
@@ -84,7 +85,7 @@ public class EnfermedadesListaFragment extends Fragment {
     }
 
     public void llenarListViewEnfermedades(){
-        arrayListEnfermedadesClass = Global.listaEnfermedades;
+        arrayListEnfermedadesClass = enfermedadLista.obtenerDatos();
         arrayListEnfermedadesString = convertirClass_String();
         adapter = new ArrayAdapter<String>(getActivity().getApplicationContext(),android.R.layout.simple_list_item_1,arrayListEnfermedadesString);
         enfermedades_lista_listView_enfermedades.setAdapter(adapter);
@@ -154,7 +155,8 @@ public class EnfermedadesListaFragment extends Fragment {
         popupMenu.show();
     }
     public void eliminar(int posicion){
-        Global.listaEnfermedades.remove(posicion);
+        Enfermedad enf= Global.listaEnfermedades.get(posicion);
+        enfermedadLista.eliminarEnfermedadListaEnfermedades(enf);
         onResume();
     }
 

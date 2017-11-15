@@ -20,7 +20,9 @@ public class ListaSintomas {
         }
         return instancia;
     }
-
+    public ArrayList<Sintoma> cargarLista(){
+        return Global.listaSintomas;
+    }
 
     public ListaSintomas() {
         this.listaSintomas = new ArrayList<>();
@@ -29,8 +31,13 @@ public class ListaSintomas {
         return this.listaSintomas.size();
     }
     public void eliminarSintomaListaSintomas(Sintoma s){
-        this.listaSintomas.remove(s);
+        this.listaSintomas.remove(s);Global.listaSintomas.remove(s);
     }
+
+    public void editarSintoma(int valorInt, String nuevoNombre){
+        Global.listaSintomas.get(valorInt).setNombre(nuevoNombre);
+    }
+
     public void addSintomaListaSintomas(Sintoma sintoma){
         boolean valido = true;
         for (Sintoma s : this.listaSintomas){
@@ -40,6 +47,7 @@ public class ListaSintomas {
         }
         if(valido){
             this.listaSintomas.add(sintoma);
+            Global.listaSintomas.add(sintoma);
         }
     }
     public void limpiarListaSintomas(){

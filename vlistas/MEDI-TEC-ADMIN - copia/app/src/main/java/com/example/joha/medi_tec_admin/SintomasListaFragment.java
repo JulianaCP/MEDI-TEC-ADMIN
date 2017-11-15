@@ -35,6 +35,7 @@ public class SintomasListaFragment extends Fragment {
     private ArrayAdapter<String> adapter;
     private ListView sintomasListViewSintomas;
     private int posicionItemPopuMenuPresionado;
+    public ListaSintomas sint= new ListaSintomas();
 
     public SintomasListaFragment() {
         // Required empty public constructor
@@ -83,7 +84,7 @@ public class SintomasListaFragment extends Fragment {
     }
 
     public void llenarListViewSintomas(){
-        arrayListaSintomasClass = Global.listaSintomas;
+        arrayListaSintomasClass = sint.cargarLista();
         arrayListaSintomasString = convertirClass_String();
         adapter = new ArrayAdapter<String>(getActivity().getApplicationContext(),android.R.layout.simple_list_item_1,arrayListaSintomasString);
         sintomasListViewSintomas.setAdapter(adapter);
@@ -150,7 +151,8 @@ public class SintomasListaFragment extends Fragment {
     }
 
     public void eliminar(int posicion){
-        Global.listaSintomas.remove(posicion);
+        Sintoma s= Global.listaSintomas.get(posicion);
+        sint.eliminarSintomaListaSintomas(s);
         onResume();
     }
 }

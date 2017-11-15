@@ -22,6 +22,7 @@ public class AgregarEnfermedadFragment extends Fragment {
     EditText input_nombre, input_descripcion;
     String stringNombre,stringDescripcion;
     private View rootView;
+    ListaEnfermedades listaEnfermedades= new ListaEnfermedades();
     public AgregarEnfermedadFragment() {
         // Required empty public constructor
     }
@@ -61,7 +62,7 @@ public class AgregarEnfermedadFragment extends Fragment {
                     stringDescripcion = input_descripcion.getText().toString();
                     int idBorrar = 0;
                     Enfermedad enfer = new Enfermedad(idBorrar,stringNombre,stringDescripcion);
-                    Global.listaEnfermedades.add(enfer);
+                    listaEnfermedades.addEnfermedadListaEnfermedades(enfer);
                     Toast.makeText(getActivity(), "Agregado ", Toast.LENGTH_SHORT).show();
                     goPreviousFragment();
                 }

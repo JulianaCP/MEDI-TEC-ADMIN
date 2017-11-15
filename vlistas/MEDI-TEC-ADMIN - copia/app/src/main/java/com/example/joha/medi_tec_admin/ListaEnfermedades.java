@@ -22,6 +22,15 @@ public class ListaEnfermedades {
         return instancia;
     }
 
+    public void editar(int valorInt, String stringNombre, String stringDescripcion){
+        Global.listaEnfermedades.get(valorInt).setNombre(stringNombre);
+        Global.listaEnfermedades.get(valorInt).setDescripcion(stringDescripcion);
+    }
+
+    public ArrayList<Enfermedad> obtenerDatos(){
+        return Global.listaEnfermedades;
+    }
+
     public ListaEnfermedades() {
         this.listaEnfermedades = new ArrayList<>();
     }
@@ -29,8 +38,10 @@ public class ListaEnfermedades {
     public int lenListaEnfermedades(){
         return this.listaEnfermedades.size();
     }
+
     public void eliminarEnfermedadListaEnfermedades(Enfermedad e){
         this.listaEnfermedades.remove(e);
+        Global.listaEnfermedades.remove(e);
     }
     public void addEnfermedadListaEnfermedades(Enfermedad enfermedad){
         boolean valido = true;
@@ -42,6 +53,7 @@ public class ListaEnfermedades {
         }
         if(valido){
             this.listaEnfermedades.add(enfermedad);
+            Global.listaEnfermedades.add(enfermedad);
         }
     }
     public void limpiarListaEnfermedades(){

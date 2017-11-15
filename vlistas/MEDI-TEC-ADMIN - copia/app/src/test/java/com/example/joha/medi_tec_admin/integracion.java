@@ -20,6 +20,7 @@ import static org.mockito.Mockito.verify;
 
 public class integracion {
     Enfermedad nuevaEnf;
+    List<String> listaMedicamentosLocal,listaSintomasLocal ;
 
     @Before
     public void setUp() throws Exception {
@@ -39,9 +40,8 @@ public class integracion {
         mockitoEnf.setIdMedicamento(0);
         assertEquals(0,mockitoEnf.getIdEnfermedad());
         assertEquals(0,mockitoEnf.getIdMedicamento());
-        SintomasListaFragment sintomasListaFragment = new SintomasListaFragment();
-        mockitoEnf.insertar(sintomasListaFragment.getContext());
-        verify(mockitoEnf).insertar(sintomasListaFragment.getContext());
+        mockitoEnf.insertar(nuevaEnf,listaMedicamentosLocal, 0);
+        verify(mockitoEnf).insertar(nuevaEnf,listaMedicamentosLocal, 0);
     }
 
     //(19) Asignar síntoma a una enfermedad.
@@ -52,8 +52,7 @@ public class integracion {
         mockitoEnf.setIdSintoma(0);
         assertEquals(0,mockitoEnf.getIdEnfermedad());
         assertEquals(0,mockitoEnf.getIdSintoma());
-        SintomasListaFragment sintomasListaFragment = new SintomasListaFragment();
-        mockitoEnf.insertar(sintomasListaFragment.getContext());
-        verify(mockitoEnf).insertar(sintomasListaFragment.getContext());
+        mockitoEnf.insertar(nuevaEnf,listaSintomasLocal, 0);
+        verify(mockitoEnf).insertar(nuevaEnf,listaSintomasLocal, 0);
     }
 }

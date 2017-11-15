@@ -4,6 +4,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -12,6 +15,7 @@ import static org.mockito.Mockito.verify;
 public class RendimientoSintoma {
     private ListaSintomas listaSintomas;
     private Sintoma sintoma;
+    private List<String> lista;
 
     @Before
     public void setUp() throws Exception {
@@ -19,28 +23,26 @@ public class RendimientoSintoma {
         for(int i= 0; i < 200; i ++){
             this.sintoma = new Sintoma(i,"simtona nuevo");
             this.listaSintomas.addSintomaListaSintomas(sintoma);
-            Global.listaSintomas.add(sintoma);
         }
-
     }
 
     @After
     public void tearDown() throws Exception {
         this.listaSintomas=null;
+        Global.listaSintomas.clear();
     }
 
     //(2) Carga la lista de síntomas con 200 datos en menos de 1.5
     @Test
     public void cargaListaDeSintomaEnMenosDeX() throws Exception {
-        ListaSintomas mockito= mock(ListaSintomas.class);
+        ArrayList<Sintoma>lis;
         double startTime = System.currentTimeMillis();
         System.out.print("\n\nTiempo inicial"+startTime);
-        MedicamentosListaFragment nuevo= new MedicamentosListaFragment();
-        mockito.leer(nuevo.getContext());
-        double endTime = System.currentTimeMillis() - startTime;
+            lis=listaSintomas.cargarLista();
+            double endTime = System.currentTimeMillis() - startTime;
         System.out.print("\n\nTiempo final: "+endTime/1000);
-        verify(mockito).leer(nuevo.getContext());
-        assertTrue(listaSintomas.lenListaSintomas() == 200);
+
+        assertTrue(lis.size()== 200);
         assertTrue(1.5*1000 >= endTime);
     }
 
@@ -50,8 +52,8 @@ public class RendimientoSintoma {
         this.sintoma = new Sintoma(201,"simtona nuevo");
 
         double startTime = System.currentTimeMillis();
-        listaSintomas.addSintomaListaSintomas(sintoma);
         System.out.print("\n\nTiempo inicial"+startTime);
+        listaSintomas.addSintomaListaSintomas(sintoma);
         System.out.print("\n\nTiempo currente"+System.currentTimeMillis());
         double endTime = System.currentTimeMillis() - startTime;
 
@@ -65,7 +67,7 @@ public class RendimientoSintoma {
     public void edicionSintomaEnMenosDeX() throws Exception {
         double startTime = System.currentTimeMillis();
         System.out.print("\n\nTiempo inicial"+startTime);
-        sintoma.setNombre("sintoma actualizado");
+            listaSintomas.editarSintoma(199,"sintoma actualizado");
         double endTime = System.currentTimeMillis() - startTime;
         System.out.print("\n\nTiempo final: "+endTime);
 
@@ -92,13 +94,14 @@ public class RendimientoSintoma {
     //(14) Carga lista de síntomas de una enfermedad en menos de 1.2 s
     @Test
     public void cargaDeDatoSintomaEnfsEnMenosDeX() throws Exception {
-        Enfermedad nuevaEnf= new Enfermedad(1,"nueva","desc");
+
         double startTime = System.currentTimeMillis();
         System.out.print("\n\nTiempo inicial: "+startTime);
-        ListaSintomasEnfermedad mockito= mock(ListaSintomasEnfermedad.class);
-        AgregarSintomaEnfermedadFragment nuevo= new AgregarSintomaEnfermedadFragment();
-        mockito.leer(nuevo.getContext());
+            lista = new ArrayList<>();
+            SintomasEnfermedad nuevo= new SintomasEnfermedad();
+            nuevo.cargarLista(lista);
         double endTime = System.currentTimeMillis() - startTime;
+
         System.out.print("\n\nTiempo final: "+endTime);
         assertTrue(endTime <= 1.2*1000);
     }

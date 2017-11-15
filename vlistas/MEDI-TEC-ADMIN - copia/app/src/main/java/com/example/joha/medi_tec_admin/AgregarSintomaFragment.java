@@ -22,7 +22,7 @@ public class AgregarSintomaFragment extends Fragment {
     EditText sintomasAgregarInputNombre;
     String nombre;
     private View rootView;
-
+    ListaSintomas sint= new ListaSintomas();
     public AgregarSintomaFragment() {
         // Required empty public constructor
     }
@@ -47,7 +47,7 @@ public class AgregarSintomaFragment extends Fragment {
                     int idNuevo = 0;
                     Sintoma sintoma = new Sintoma(idNuevo,nombre);
                     Toast.makeText(getActivity(), "Agregado ", Toast.LENGTH_SHORT).show();
-                    Global.listaSintomas.add(sintoma);
+                    sint.addSintomaListaSintomas(sintoma);
                     goPreviousFragment();
                 }
             }

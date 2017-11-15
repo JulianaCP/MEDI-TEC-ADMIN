@@ -39,6 +39,7 @@ public class MedicamentosListaFragment extends Fragment {
     private ArrayList<String> arrayListaMedicamentosString;
     private ArrayAdapter<String> adapter;
     private View rootView;
+    ListaMedicamentos lista;
     private ListView medicamentos_lista_ListViewMedicamentos;
     private int posicionItemPopuMenuPresionado;
     private Bundle bundle;
@@ -52,6 +53,7 @@ public class MedicamentosListaFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        lista= new ListaMedicamentos();
         rootView = inflater.inflate(R.layout.fragment_medicamentos_lista, container, false);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         medicamentos_lista_ListViewMedicamentos = (ListView) rootView.findViewById(R.id.medicamentos_lista_listView_medicamentos);
@@ -88,11 +90,12 @@ public class MedicamentosListaFragment extends Fragment {
     }
 
     public void llenarListViewMedicamentos(){
-        arrayListaMedicamentosClass = Global.listaMedicamentos;
+        arrayListaMedicamentosClass = lista.obtenerDatos();
         arrayListaMedicamentosString = convertirClass_String();
         adapter = new ArrayAdapter<String>(getActivity().getApplicationContext(),android.R.layout.simple_list_item_1 , arrayListaMedicamentosString);
         medicamentos_lista_ListViewMedicamentos.setAdapter(adapter);
     }
+
     public ArrayList<String> convertirClass_String(){
         ArrayList<String> listaTemp = new ArrayList<String>();
         String valor;
@@ -152,7 +155,8 @@ public class MedicamentosListaFragment extends Fragment {
         popupMenu.show();
     }
     public void eliminar(int posicion){
-        Global.listaMedicamentos.remove(posicion);
+        Medicamento med= Global.listaMedicamentos.get(posicion);
+        lista.eliminarMedicamentoListaMedicamentos(med);
         onResume();
     }
 

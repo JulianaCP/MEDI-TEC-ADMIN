@@ -23,7 +23,7 @@ public class AgregarMedicamentosFragment extends Fragment {
     private Button aceptarButton, cancelarButton;
     private EditText input_nombre, input_descripcion;
     private String stringNombre,stringDescripcion;
-
+    ListaMedicamentos medic= new ListaMedicamentos();
     public AgregarMedicamentosFragment() {
         // Required empty public constructor
     }
@@ -63,7 +63,7 @@ public class AgregarMedicamentosFragment extends Fragment {
                     stringDescripcion = input_descripcion.getText().toString();
                     int idBorrar = 0;
                     Medicamento medi = new Medicamento(idBorrar,stringNombre,stringDescripcion);
-                    Global.listaMedicamentos.add(medi);
+                    medic.addMedicamentoListaMedicamentos(medi);
                     goPreviousFragment();
                 }
             }

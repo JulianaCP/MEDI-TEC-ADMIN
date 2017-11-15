@@ -25,6 +25,7 @@ public class EditarSintomasFragment extends Fragment {
     EditText editarSintmasInputNombre;
     Button editsrSintomasButtonAceptar;
     Bundle bundle;
+    ListaSintomas sint= new ListaSintomas();
     String valorString, nuevoNombre;
     int valorInt;
     private View rootView;
@@ -55,7 +56,7 @@ public class EditarSintomasFragment extends Fragment {
                             .setAction("Action", null).show();
                 }
                 else{
-                    Global.listaSintomas.get(valorInt).setNombre(nuevoNombre);
+                    sint.editarSintoma( valorInt, nuevoNombre);
                     goPreviousFragment();
                 }
 

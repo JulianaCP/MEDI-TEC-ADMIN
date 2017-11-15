@@ -24,6 +24,7 @@ public class EditarMedicamentoFragment extends Fragment {
     private EditText input_nombre, input_descripcion;
     private String stringNombre,stringDescripcion;
     private String valorString;
+    ListaMedicamentos med= new ListaMedicamentos();
     private int valorInt;
 
     Medicamento medicamento;
@@ -73,8 +74,7 @@ public class EditarMedicamentoFragment extends Fragment {
                 else{
                     stringNombre = input_nombre.getText().toString();
                     stringDescripcion = input_descripcion.getText().toString();
-                    Global.listaMedicamentos.get(valorInt).setNombre(stringNombre);
-                    Global.listaMedicamentos.get(valorInt).setDescripcion(stringDescripcion);
+                    med.editarMedicamento(valorInt, stringNombre, stringDescripcion);
                     goPreviousFragment();
                 }
             }

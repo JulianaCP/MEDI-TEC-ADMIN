@@ -14,6 +14,10 @@ public class ListaMedicamentos {
     private ArrayList<Medicamento> listaMedicamentos = new ArrayList<>();
     private static ListaMedicamentos instancia = null;
 
+    public ArrayList<Medicamento> obtenerDatos(){
+        return  Global.listaMedicamentos;
+    }
+
     public static ListaMedicamentos getInstancia() {
         if (instancia == null) {
             instancia = new ListaMedicamentos();
@@ -21,6 +25,10 @@ public class ListaMedicamentos {
         return instancia;
     }
 
+    public void editarMedicamento(int valorInt, String stringNombre, String stringDescripcion){
+        Global.listaMedicamentos.get(valorInt).setNombre(stringNombre);
+        Global.listaMedicamentos.get(valorInt).setDescripcion(stringDescripcion);
+    }
 
     public ListaMedicamentos() {
         this.listaMedicamentos = new ArrayList<>();
@@ -31,6 +39,7 @@ public class ListaMedicamentos {
     }
     public void eliminarMedicamentoListaMedicamentos(Medicamento m){
         this.listaMedicamentos.remove(m);
+        Global.listaMedicamentos.remove(m);
     }
     public void addMedicamentoListaMedicamentos(Medicamento medicamento){
         boolean valido = true;
@@ -42,6 +51,7 @@ public class ListaMedicamentos {
         }
         if(valido){
             this.listaMedicamentos.add(medicamento);
+            Global.listaMedicamentos.add(medicamento);
         }
 
     }
