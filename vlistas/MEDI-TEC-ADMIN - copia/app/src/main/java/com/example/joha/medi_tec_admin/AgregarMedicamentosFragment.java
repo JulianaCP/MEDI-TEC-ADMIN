@@ -64,6 +64,7 @@ public class AgregarMedicamentosFragment extends Fragment {
                     int idBorrar = 0;
                     Medicamento medi = new Medicamento(idBorrar,stringNombre,stringDescripcion);
                     medic.addMedicamentoListaMedicamentos(medi);
+                    Toast.makeText(getActivity(), "Agregado ", Toast.LENGTH_SHORT).show();
                     goPreviousFragment();
                 }
             }
